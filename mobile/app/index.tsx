@@ -1,8 +1,9 @@
-import InputField from "./components/input-text";
+import { TextInputField } from "@/components/text-input-field";
+
 
 export default function App() {
 
   return (
-    <InputField />
+    <TextInputField />
   );
 }
