@@ -3,12 +3,15 @@ name: Release Build
 on:
   push:
     tags:
-      - 'v*'   # triggers on v1.0.0, v.1.2.0, v2.0.0-beta, etc.
+      - 'v*'
 
 jobs:
   build:
     name: Build & Upload APK
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./mobile  
 
     steps:
       - name: Checkout
@@ -34,9 +37,8 @@ jobs:
         run: |
           APK_PATH=$(find . -name "*.apk" | head -1)
           VERSION=${{ github.ref_name }}
-          mv "$APK_PATH" "sonvo-${VERSION}.apk"
-          echo "apk_path=sonvo-${VERSION}.apk" >> $GITHUB_OUTPUT
-          echo "Found APK: sonvo-${VERSION}.apk"
+          mv "$APK_PATH" "emotions-${VERSION}.apk"
+          echo "apk_path=${{ github.workspace }}/mobile/emotions-${VERSION}.apk" >> $GITHUB_OUTPUT
 
       - name: Create GitHub Release & Upload APK
         uses: softprops/action-gh-release@v2
@@ -44,6 +46,6 @@ jobs:
           tag_name: ${{ github.ref_name }}
           name: Release ${{ github.ref_name }}
           files: ${{ steps.find_apk.outputs.apk_path }}
-          generate_release_notes: true   # auto generates changelog from commits
+          generate_release_notes: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
