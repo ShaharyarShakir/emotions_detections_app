@@ -5,13 +5,15 @@ on:
     tags:
       - 'v*'
 
+permissions:
+  contents: write  
 jobs:
   build:
     name: Build & Upload APK
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./mobile  
+        working-directory: ./mobile
 
     steps:
       - name: Checkout
